@@ -2,11 +2,10 @@ from xmlrpc.server import SimpleXMLRPCServer
 from xmlrpc.server import SimpleXMLRPCRequestHandler
 import spacy
 
-# port and domain to run the server from
-domain = 'localhost'
+# port to run the server from
 port = 8000
 
-server = SimpleXMLRPCServer((domain,port))
+server = SimpleXMLRPCServer(('localhost',port))
 server.register_introspection_functions()
 
 # words that should not appear in an imperative sentence
