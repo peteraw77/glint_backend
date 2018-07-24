@@ -1,14 +1,17 @@
-from SimpleXMLRPCServer import SimpleXMLRPCServer
-from SimpleXMLRPCServer import SimpleXMLRPCRequestHandler
+from xmlrpc.server import SimpleXMLRPCServer
+from xmlrpc.server import SimpleXMLRPCRequestHandler
 import spacy
 
-server = SimpleXMLRPCServer(('localhost',8000))
+# port to run the server from
+port = 8000
+
+server = SimpleXMLRPCServer(('localhost',port))
 server.register_introspection_functions()
 
 # words that should not appear in an imperative sentence
-non_imperative_words = {'i', 'please', 'you'}
+non_imperative_words = {'i', 'please', 'you', 'me'}
 # words handled poorly by spacy
-problem_words = {'rework', 'update', 'fix'}
+problem_words = {'rework', 'update', 'fix', 'terminate'}
 
 def is_imperative(msg):
     '''
@@ -22,15 +25,16 @@ def is_imperative(msg):
         text = out[0].text.lower()
         if text not in problem_words:
             print('%s is not a simple verb' % text)
-            return False
+            return 0
 
     # check if there is a subject
     for word in out:
         if word.text.lower() in non_imperative_words:
-            return False
+            return 0
 
-    return True
-server.register_instance(is_imperative)
+    return 1
+server.register_function(is_imperative, 'is_imperative')
 
 # main server loop
+print('Starting server on port %d...' % port)
 server.serve_forever()
