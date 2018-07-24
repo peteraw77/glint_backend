@@ -1,0 +1,2 @@
+glint_server
+spacy>=2.0.11
