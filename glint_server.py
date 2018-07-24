@@ -5,7 +5,7 @@ import spacy
 
 # port to run the server from
 host = '0.0.0.0'
-port = os.environ.get("PORT", 5000))
+port = os.environ.get("PORT", 5000)
 
 server = SimpleXMLRPCServer((host,port))
 server.register_introspection_functions()
